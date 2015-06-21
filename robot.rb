@@ -10,11 +10,15 @@ class Robot
     @spawned = false
   end
 
-  def place(x, y, direction)
-    @cur_x         = x
-    @cur_y         = y
-    @cur_direction = direction
-    @spawned       = true
+  def place(x, y, direction, table)
+    if table.valid_coords?(x, y)
+      @cur_x         = x
+      @cur_y         = y
+      @cur_direction = direction
+      @spawned       = true
+    else
+      p 'invalid placement coordinates'
+    end
   end
 
   def placed?

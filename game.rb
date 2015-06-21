@@ -31,7 +31,7 @@ class Game
       when 'place'
         p '*placing robot'
         place_coords = input[1].split(',', 3)
-        place_robot(place_coords)
+        @robot.place(place_coords[0].to_i, place_coords[1].to_i, place_coords[2], @table)
       when 'report'
         @robot.report
       when 'move'
@@ -56,15 +56,6 @@ class Game
     elsif @robot.placed? == false && input != 'place'
       p 'robot not yet placed, please issue a place command'
       return false
-    end
-  end
-
-  def place_robot(place_coords)
-    x = place_coords[0].to_i
-    y = place_coords[1].to_i
-
-    if @table.valid_coords?(x, y)
-      @robot.place(x, y, place_coords[2])
     end
   end
 
