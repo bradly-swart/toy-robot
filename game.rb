@@ -31,11 +31,11 @@ class Game
       when 'place'
         p '*placing robot'
         place_coords = input[1].split(',', 3)
-        @robot.place(place_coords[0].to_i, place_coords[1].to_i, place_coords[2], @table)
+        @robot.place(place_coords[0].to_i, place_coords[1].to_i, place_coords[2].downcase.to_sym, @table)
       when 'report'
         @robot.report
       when 'move'
-        @robot.move
+        @robot.move(@table)
       when 'left'
         @robot.rotate(:left)
       when 'right'
