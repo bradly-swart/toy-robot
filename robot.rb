@@ -17,8 +17,10 @@ class Robot
       @cur_y         = y
       @cur_direction = direction
       @spawned       = true
+
+      return true
     else
-      p 'invalid placement coordinates'
+      return false
     end
   end
 
@@ -34,12 +36,12 @@ class Robot
     when :right
       new_direction(cur_index+1)
     else
-      p 'invalid direction'
+      raise RotateError
     end
   end
 
   def report
-    p "#{get_position.join(',')}"
+    get_position.join(',')
   end
 
   def get_position
@@ -88,4 +90,10 @@ class Robot
       end
     end
 
+end
+
+class RotateError < StandardError
+  def message
+         "Invalid rotation, expecting left or right."
+  end
 end

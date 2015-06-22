@@ -18,43 +18,47 @@ class Game
     end
   end
 
-  def update_state
-    p 'updating game state'
-  end
-
   def read_input
-    input = gets.chomp.downcase.split(' ', 2)
-    p "received:#{input[0]}"
-    return unless ready(input[0]) || input[0] == 'quit'
+    begin
+      input = gets.chomp.downcase.split(' ', 2)
+      return unless ready(input[0]) || input[0] == 'quit'
 
-    case input[0]
-      when 'place'
-        p '*placing robot'
-        place_coords = input[1].split(',', 3)
-        @robot.place(place_coords[0].to_i, place_coords[1].to_i, place_coords[2].downcase.to_sym, @table)
-      when 'report'
-        @robot.report
-      when 'move'
-        @robot.move(@table)
-      when 'left'
-        @robot.rotate(:left)
-      when 'right'
-        @robot.rotate(:right)
-      when 'quit'
-         Messages.display(:quit)
-         exit(0)
-    else
-      Messages.display(:invalid_input, input[0])
+      case input[0]
+        when 'place'
+          place_coords = input[1].split(',', 3)
+          placed = @robot.place(place_coords[0].to_i, place_coords[1].to_i, place_coords[2].downcase.to_sym, @table)
+          if placed
+            Messages.display(:successful_placement)
+          else
+            Messages.display(:invalid_placement)
+          end
+        when 'report'
+          puts @robot.report
+        when 'move'
+          @robot.move(@table)
+        when 'left'
+          @robot.rotate(:left)
+        when 'right'
+          @robot.rotate(:right)
+        when 'quit'
+           Messages.display(:quit)
+           exit(0)
+      else
+        Messages.display(:invalid_input, input[0])
+      end
+    rescue
+       Messages.display(:input_error)
+       Messages.display(:instructions)
     end
   end
 
   def ready(input)
     return true unless @robot.placed? == false
     if @robot.placed? == false && input == 'place'
-      p 'robot not yet placed, we are now placing it'
+      Messages.display(:robot_placement)
       return true
     elsif @robot.placed? == false && input != 'place'
-      p 'robot not yet placed, please issue a place command'
+      Messages.display(:robot_not_placed)
       return false
     end
   end
